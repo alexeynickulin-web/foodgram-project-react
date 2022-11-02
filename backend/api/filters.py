@@ -1,5 +1,5 @@
 from django_filters import rest_framework as django_filter
-from rest_framework import filters, pagination
+from rest_framework import filters
 
 from users.models import CustomUser
 from recipes.models import Recipe
@@ -32,8 +32,3 @@ class RecipeFilter(django_filter.FilterSet):
         if self.request.user.is_authenticated and value:
             return queryset.filter(carts__user=self.request.user)
         return queryset.all()
-
-
-class CustomPagination(pagination.PageNumberPagination):
-    page_size = 6
-    page_size_query_param = 'limit'

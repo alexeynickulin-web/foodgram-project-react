@@ -1,11 +1,12 @@
 from django.core.validators import RegexValidator
+
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
 
 from recipes.models import (Favorite, Follow, Ingredient, IngredientRecipe,
                             Recipe, ShoppingCart, Tag)
-from rest_framework import serializers
 from users.models import CustomUser
 
 
@@ -17,7 +18,7 @@ class IsFollow(metaclass=serializers.SerializerMetaclass):
         if request.user.is_anonymous:
             return False
         return Follow.objects.filter(user=request.user,
-                                        following__id=obj.id).exists()
+                                     following__id=obj.id).exists()
 
 
 class IsFavorite(metaclass=serializers.SerializerMetaclass):
@@ -53,9 +54,9 @@ class UserSerializer(UserCreateSerializer, IsFollow):
             RegexValidator(
                 regex=r'^[\w.@+-]+\Z',
                 message="Невозможный slug."
-                ),
-            ],
-        )
+            ),
+        ],
+    )
 
     class Meta:
         model = CustomUser
@@ -106,8 +107,8 @@ class TagSerializer(serializers.ModelSerializer):
             RegexValidator(
                 regex='^[-a-zA-Z0-9_]+$',
                 message="Невозможный slug."
-                ),
-            ]
+            ),
+        ]
     )
 
     class Meta:

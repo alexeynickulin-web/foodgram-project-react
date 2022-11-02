@@ -1,18 +1,19 @@
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404
+
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import (Favorite, Follow, Ingredient, IngredientRecipe,
-                            Recipe, ShoppingCart, Tag)
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import permissions, status, viewsets
 from rest_framework.response import Response
-from users.models import CustomUser
 
+from users.models import CustomUser
+from recipes.models import (Favorite, Follow, Ingredient, IngredientRecipe,
+                            Recipe, ShoppingCart, Tag)
 from .filters import IngredientFilter, RecipeFilter
 from .serializers import (FavoriteSerializer, IngredientSerializer,
                           RecipeSerializer, RecipeSerializerPost,
@@ -97,9 +98,9 @@ class FavoriteShoppingCartViewSet(viewsets.ModelViewSet):
     def delete(self, request, *args, **kwargs):
         recipe_id = self.kwargs['recipes_id']
         user_id = request.user.id
-        object = get_object_or_404(
+        recipe_object = get_object_or_404(
             self.model, user__id=user_id, recipe__id=recipe_id)
-        object.delete()
+        recipe_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -122,7 +123,7 @@ class ShoppingCartInList(viewsets.ModelViewSet):
         response = HttpResponse(content_type='application/pdf')
         response[
             'Content-Disposition'
-            ] = ('attachment; filename="somefilename.pdf"')
+        ] = ('attachment; filename="somefilename.pdf"')
         p = canvas.Canvas(response, pagesize=A4)
         left_position = 50
         top_position = 700
@@ -132,7 +133,7 @@ class ShoppingCartInList(viewsets.ModelViewSet):
         for number, item in enumerate(result, start=1):
             pdfmetrics.registerFont(
                 TTFont('Miama Nueva', 'fonts/Miama Nueva.ttf')
-                )
+            )
             p.setFont('Miama Nueva', 14)
             p.drawString(
                 left_position,

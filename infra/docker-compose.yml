@@ -8,14 +8,14 @@ services:
       - ./.env
   
   frontend:
-    image: alexeynickulin/foodgram_frontend:latest
+    image: alexeynickulin/foodgram-frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
       - db
 
   backend:
-    image: alexeynickulin/foodgram_backend:latest
+    image: alexeynickulin/foodgram-backend:latest
     restart: always
     ports: 
       - 8000:8000

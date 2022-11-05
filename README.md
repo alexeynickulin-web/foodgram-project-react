@@ -91,7 +91,7 @@ sudo docker-compose up -d --build
     ```
     sudo docker-compose exec backend python manage.py migrate --noinput
     ```
-    - Загрузите ингредиенты в базу данных (необязательно):  
+    - Загрузите ингредиенты  в базу данных (необязательно):  
     *Если файл не указывать, по умолчанию выберется ingredients.json*
     ```
     sudo docker-compose exec backend python manage.py load_ingredients <Название файла из директории data>
@@ -103,4 +103,4 @@ sudo docker-compose up -d --build
     - Проект будет доступен по вашему IP
 
 ## Проект в интернете
-Проект запущен и доступен по [адресу](http://51.250.111.58/recipes)
+Проект запущен и доступен по [адресу](http://10.10.10.10/recipes)

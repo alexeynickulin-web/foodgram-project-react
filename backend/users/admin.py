@@ -1,13 +1,12 @@
 from django.contrib import admin
 
-from .models import CustomUser
+from .models import User, Follow
 
 
-class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'id')
-    list_filter = ('username', 'email')
-    search_fields = ('username', 'email')
-    empty_value_display = '-пусто-'
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'username', 'email')
+    list_filter = ('email', 'first_name', 'last_name')
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Follow)

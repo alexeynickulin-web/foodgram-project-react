@@ -108,11 +108,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     "Этот рецепт уже есть в списке покупок",
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            else:
-                ShoppingCart.objects.create(user=request.user, recipe=recipe)
-                serializer = serializers.ShortRecipeSerializer(recipe)
-                return Response(serializer.data,
-                                status=status.HTTP_201_CREATED)
+            ShoppingCart.objects.create(user=request.user, recipe=recipe)
+            serializer = serializers.ShortRecipeSerializer(recipe)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
         else:
             if recipe_in_shopping_cart.exists():
                 recipe_in_shopping_cart.delete()
@@ -140,11 +139,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             if recipe_in_favorite.exists():
                 return Response("Этот рецепт уже есть в избранном",
                                 status=status.HTTP_400_BAD_REQUEST)
-            else:
-                FavoriteRecipe.objects.create(user=request.user, recipe=recipe)
-                serializer = serializers.ShortRecipeSerializer(recipe)
-                return Response(serializer.data,
-                                status=status.HTTP_201_CREATED)
+
+            FavoriteRecipe.objects.create(user=request.user, recipe=recipe)
+            serializer = serializers.ShortRecipeSerializer(recipe)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
         else:
             if recipe_in_favorite.exists():
                 recipe_in_favorite.delete()
@@ -199,13 +198,13 @@ class Subscribe(APIView):
                 "Вы уже подписались на этого автора.",
                 status=status.HTTP_400_BAD_REQUEST
             )
-        else:
-            Follow.objects.create(user=request.user, author=author)
-            serializer = serializers.IsSubscribeSerializer(
-                author,
-                context={'request': 'request'}
-            )
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        Follow.objects.create(user=request.user, author=author)
+        serializer = serializers.IsSubscribeSerializer(
+            author,
+            context={'request': 'request'}
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request, pk):
         author = get_object_or_404(User, pk=pk)
@@ -216,8 +215,8 @@ class Subscribe(APIView):
                 'Вы успешно отписались от этого автора!',
                 status=status.HTTP_204_NO_CONTENT
             )
-        else:
-            return Response(
-                'Вы ещё не подписаны на этого автора.',
-                status.HTTP_400_BAD_REQUEST
-            )
+
+        return Response(
+            'Вы ещё не подписаны на этого автора.',
+            status.HTTP_400_BAD_REQUEST
+        )

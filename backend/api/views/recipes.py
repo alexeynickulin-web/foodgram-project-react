@@ -17,7 +17,7 @@ from api.serializers.recipes import (FavoriteSerializer, IngredientSerializer,
 from api.serializers.users import RecipeShortSerializer
 from recipes.models import Favorite, Ingredient, Recipe, ShoppingCart, Tag
 
-FILENAME = 'my_shopping_cart'
+FILENAME = 'my_shopping_cart.pdf'
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
